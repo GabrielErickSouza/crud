@@ -1,0 +1,33 @@
+.containe-table{
+    height: 50vh;
+    overflow-y: scroll;
+    background-color: whitesmoke;
+    border-radius: 5px;
+}
+
+.pagination{
+    margin-top: 20px;
+    display: flex;
+    width: 700px;
+}
+
+.search{
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search > input{
+    border: none;
+    border-radius: 2px;
+    height: 30px;
+    margin-right: 10px;
+}
+.search > button >img{
+    height: 30px;
+}
+
+.search > button,.content{
+    cursor: pointer;
+}

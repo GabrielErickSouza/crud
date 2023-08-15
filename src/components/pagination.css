@@ -1,0 +1,29 @@
+.item-container{
+    color: whitesmoke;
+    height: 90vh;
+}
+
+.item{
+    width: 500px;
+    border: 1px solid whitesmoke;
+}
+.item-span{
+    display: block;
+}
+
+.content{
+    width: 46px;
+    display: block;
+}
+.item{
+    margin-bottom: 10px;
+}
+
+.container{
+    display: flex;
+    width: 500px;
+    padding-bottom: 10px;
+}
+
+
+
