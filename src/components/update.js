@@ -1,5 +1,5 @@
-import React,{useEffect, useState} from "react";
-
+import React,{useCallback, useState} from "react";
+import { useQuery, useMutation } from "react-query";
 import { useNavigate } from 'react-router-dom'
 import Forms from "./forms";
 
@@ -8,39 +8,42 @@ import {useParams} from 'react-router-dom'
 
 
 export default function Update(){
-        const [userdata,setUserData] = useState()
+    const [userdata,setUserData] = useState()
         
+    const {id} = useParams()
 
-        const {id} = useParams()
+    const history = useNavigate()
 
-        const history = useNavigate()
+    const {data,isLoading} = useQuery('user', ()=>{
+            return axios.get(`https://646f6e7609ff19b120873f81.mockapi.io/fakedata/${id}`)
+            .then(response => response.data)
+    })  
 
-     useEffect(()=>{
-       axios.get('https://646f6e7609ff19b120873f81.mockapi.io/fakedata/'+id)
-        .then((response) =>{
-            setUserData(response.data)
-        })
-     },[id])
-     
-     const updateAPIData = () =>{
-       axios.put(`https://646f6e7609ff19b120873f81.mockapi.io/fakedata/`)
-       .then(()=>{
+    const mutation = useMutation({
+        mutationFn: ()=>{
+            return axios.put(`https://646f6e7609ff19b120873f81.mockapi.io/fakedata${id}`) 
+        },
+        onSuccess:()=> {
+            alert('Atualizado com sucesso!')
             history('/read')
-        }).then(()=> alert('Atualizado com Sucesso!'))
-        
-     }
-
+        }
+    })
     
-    if (!userdata)  return   
+    const updateData = useCallback(()=>{ 
+           mutation.mutate({firstName:userdata.firstName,lastName:userdata.lastName})
+    },[mutation,userdata])
+
+    if (isLoading)  return  <div>Carregando...</div>
+
     return (
         <Forms 
-        firstName={userdata.firstName}
-        lastName={userdata.lastName}
-        checkbox={Boolean(userdata.checkbox)}
-        first={(e)=>setUserData({...userdata,firstName:e.target.value})}
-        last={(e)=>setUserData({...userdata,lastName:e.target.value})}
-        check={(e,data)=>setUserData({...userdata,checkbox:data.checked})}
-        post={updateAPIData}
+        firstName={data.firstName}
+        lastName={data.lastName}
+        checkbox={Boolean(data.checkbox)}
+        first={(e)=>setUserData({...data,firstName:e.target.value})}
+        last={(e)=>setUserData({...data,lastName:e.target.value})}
+        check={(e,datacheck)=>setUserData({...data,checkbox:datacheck.checked})}
+        post={updateData}
         /> 
     )
 }

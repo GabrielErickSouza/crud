@@ -1,68 +1,78 @@
 import axios from "axios";
-import React,{useEffect,useState} from "react";
+import React from "react";
 import './read.css'
 import { Table, Button } from 'semantic-ui-react'
 import { Link } from "react-router-dom";
-import Imagem from "./icons8-order-48.png"
+import {  useQuery } from "react-query";
 
 export default function Read(){
-    const [APIData,setAPIData] = useState([])
+    // const [APIData,setAPIData] = useState([])
     
-    
-    const [itensPerPage,setItensPerPage] = useState(5)
-    const [currentPage, setCurrentPage] = useState(0)
-    const [search, setSearch] = useState('')
+    const {data,isLoading} = useQuery('user-list', ()=>{
+      return  axios.get("https://646f6e7609ff19b120873f81.mockapi.io/fakedata")
+        .then(response => response.data)
+    })
 
-
-    const pages = Math.ceil(APIData.length/itensPerPage)
-    const startIndex = currentPage * itensPerPage
-    const endIndex = startIndex + itensPerPage
-    const currentItens = APIData.slice(startIndex,endIndex)
-    
-    const searchLowerCase = search.toLocaleLowerCase()
     
 
-    const data = currentItens.filter((data)=> data.firstName.toLowerCase().includes(searchLowerCase)||
-    data.lastName.toLowerCase().includes(searchLowerCase))
+    if (isLoading){
+        return <h1>Carregando...</h1>
+    }
 
-    const handleOrderClick = ()=>{
-        let newData = [...APIData]  
+    // const [itensPerPage,setItensPerPage] = useState(5)
+    // const [currentPage, setCurrentPage] = useState(0)
+    // const [search, setSearch] = useState('')
+
+
+    // const pages = Math.ceil(APIData.length/itensPerPage)
+    // const startIndex = currentPage * itensPerPage
+    // const endIndex = startIndex + itensPerPage
+    // const currentItens = APIData.slice(startIndex,endIndex)
+    
+    // const searchLowerCase = search.toLocaleLowerCase()
+    
+
+    // const data = currentItens.filter((data)=> data.firstName.toLowerCase().includes(searchLowerCase)||
+    // data.lastName.toLowerCase().includes(searchLowerCase))
+
+    // const handleOrderClick = ()=>{
+    //     let newData = [...APIData]  
         
-        newData.sort((a,b)=> (a.firstName > b.firstName)?1:(b.firstName>a.firstName)?-1:0)
-        setAPIData(newData)
-    }
+    //     newData.sort((a,b)=> (a.firstName > b.firstName)?1:(b.firstName>a.firstName)?-1:0)
+    //     setAPIData(newData)
+    // }
 
-    useEffect(()=>{
-        axios.get("https://646f6e7609ff19b120873f81.mockapi.io/fakedata")
-        .then((response) => {
-            setAPIData(response.data)
-        })
-    },[])
+    // useEffect(()=>{
+    //     axios.get("https://646f6e7609ff19b120873f81.mockapi.io/fakedata")
+    //     .then((response) => {
+    //         setAPIData(response.data)
+    //     })
+    // },[])
 
-    const setData = () =>{
-        axios.get('https://646f6e7609ff19b120873f81.mockapi.io/fakedata/')
-        .then(response=>{
-            setAPIData(response.data)
-        })
-    }
+    // const setData = () =>{
+    //     axios.get('https://646f6e7609ff19b120873f81.mockapi.io/fakedata/')
+    //     .then(response=>{
+    //         setAPIData(response.data)
+    //     })
+    // }
     
-    const onDelete = (id) =>{
-        if(window.confirm('Deseja apagar os dados ?')){
-            axios.delete(`https://646f6e7609ff19b120873f81.mockapi.io/fakedata/${id}`)
-            .then(()=>{getData()})
-        }
-    }
+    // const onDelete = (id) =>{
+    //     if(window.confirm('Deseja apagar os dados ?')){
+    //         axios.delete(`https://646f6e7609ff19b120873f81.mockapi.io/fakedata/${id}`)
+    //         .then(()=>{getData()})
+    //     }
+    // }
 
-    const getData = () =>{
-        axios.get('https://646f6e7609ff19b120873f81.mockapi.io/fakedata')
-        .then((getData)=>{
-            setAPIData(getData.data)
-        })
-    }
+    // const getData = () =>{
+    //     axios.get('https://646f6e7609ff19b120873f81.mockapi.io/fakedata')
+    //     .then((getData)=>{
+    //         setAPIData(getData.data)
+    //     })
+    // }
     
     return (
         <>
-            <div className="search">
+            {/* <div className="search">
                  <input placeholder="Pesquise um nome" type="search" value={search} onChange={(e)=> setSearch(e.target.value)} /> 
                  <button onClick={handleOrderClick}><img src={Imagem} alt="icon"/></button>
             </div>
@@ -74,7 +84,7 @@ export default function Read(){
                     <option value={25}>25</option>
                 </select>
 
-            </div>
+            </div> */}
         <div className="containe-table">
              
             <Table  singleLine>
@@ -103,11 +113,11 @@ export default function Read(){
                                 </Table.Cell>
                                 <Table.Cell>
                                 <Link  to={`/update/${Number(data.id)}`}>    
-                                <Button onClick={()=> setData(data)} >Update</Button>    
+                                <Button onClick={()=> data} >Update</Button>    
                                 </Link>
                                 </Table.Cell>
                                 <Table.Cell>
-                                    <Button onClick={()=> onDelete(data.id)}>Delete</Button>
+                                    {/* <Button onClick={()=> onDelete(data.id)}>Delete</Button> */}
                                 </Table.Cell>
                             </Table.Row>
                         )
@@ -117,14 +127,14 @@ export default function Read(){
             </Table>
             
         </div>
-        <div className="pagination">{Array.from(Array(pages), (item,index)=>{
+        {/* <div className="pagination">{Array.from(Array(pages), (item,index)=>{
                 return (
                     <button key={index} className="content" value={index} onClick={(e)=> setCurrentPage(Number(e.target.value))}>
                     {index +1}
                     </button>
                     
                     )
-            })}</div>
+            })}</div> */}
         </>
     );
           
