@@ -1,14 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
-.main-header{
+.main-header {
   font-family: 'Montserrat', sans-serif;
 }
 
-
-body{
+body {
   background-color: #212121 !important;
 }
 
-.header{
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -16,7 +15,7 @@ body{
   padding: 20px;
 }
 
-.main{
+.main {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -25,12 +24,12 @@ body{
   color: whitesmoke;
 }
 
-.create-form label{
+.create-form label {
   color: whitesmoke !important;
   font-family: 'Montserrat', sans-serif;
   font-size: 12px !important;
 }
 
-.btn{
+.btn {
   margin-top: 20px;
 }
