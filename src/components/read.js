@@ -1,9 +1,9 @@
 import axios from "axios";
-import React from "react";
+import React, { useCallback } from "react";
 import './read.css'
 import { Table, Button } from 'semantic-ui-react'
 import { Link } from "react-router-dom";
-import {  useQuery } from "react-query";
+import {  useMutation, useQuery } from "react-query";
 
 export default function Read(){
     // const [APIData,setAPIData] = useState([])
@@ -13,8 +13,17 @@ export default function Read(){
         .then(response => response.data)
     })
 
-    
+   
 
+    const deleteMutation = useMutation( (id)=> axios.delete(`https://646f6e7609ff19b120873f81.mockapi.io/fakedata/${id}`))
+    
+    // const onDelete = useCallback((id)=>{
+    //     deleteMutation.mutate(id)
+    // },[deleteMutation])
+
+    // const onDelete = (id) =>{
+    //     deleteMutation.mutate(id)
+    // }
     if (isLoading){
         return <h1>Carregando...</h1>
     }
@@ -56,12 +65,9 @@ export default function Read(){
     //     })
     // }
     
-    // const onDelete = (id) =>{
-    //     if(window.confirm('Deseja apagar os dados ?')){
-    //         axios.delete(`https://646f6e7609ff19b120873f81.mockapi.io/fakedata/${id}`)
-    //         .then(()=>{getData()})
-    //     }
-    // }
+    
+
+    
 
     // const getData = () =>{
     //     axios.get('https://646f6e7609ff19b120873f81.mockapi.io/fakedata')
@@ -117,7 +123,7 @@ export default function Read(){
                                 </Link>
                                 </Table.Cell>
                                 <Table.Cell>
-                                    {/* <Button onClick={()=> onDelete(data.id)}>Delete</Button> */}
+                                    {/* <Button onClick={deleteMutation.mutate(data.id)}>Delete</Button> */}
                                 </Table.Cell>
                             </Table.Row>
                         )

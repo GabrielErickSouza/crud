@@ -1,4 +1,4 @@
-import React,{useCallback, useState} from "react";
+import React,{useCallback, useEffect, useState} from "react";
 import { useQuery, useMutation } from "react-query";
 import { useNavigate } from 'react-router-dom'
 import Forms from "./forms";
@@ -19,9 +19,15 @@ export default function Update(){
             .then(response => response.data)
     })  
 
+    useEffect(()=>{
+        if(data){
+            setUserData(data)
+        }
+    },[data])
+    
     const mutation = useMutation({
         mutationFn: ()=>{
-            return axios.put(`https://646f6e7609ff19b120873f81.mockapi.io/fakedata${id}`) 
+            return axios.put(`https://646f6e7609ff19b120873f81.mockapi.io/fakedata/${id}`)
         },
         onSuccess:()=> {
             alert('Atualizado com sucesso!')
@@ -30,19 +36,18 @@ export default function Update(){
     })
     
     const updateData = useCallback(()=>{ 
-           mutation.mutate({firstName:userdata.firstName,lastName:userdata.lastName})
+           mutation.mutate({firstName:userdata.firstName,lastName:userdata.lastName,checkbox:userdata.checkbox})
     },[mutation,userdata])
-
-    if (isLoading)  return  <div>Carregando...</div>
-
+ 
+    if (!userdata||isLoading) return <div>Carregando...</div> 
     return (
         <Forms 
-        firstName={data.firstName}
-        lastName={data.lastName}
-        checkbox={Boolean(data.checkbox)}
-        first={(e)=>setUserData({...data,firstName:e.target.value})}
-        last={(e)=>setUserData({...data,lastName:e.target.value})}
-        check={(e,datacheck)=>setUserData({...data,checkbox:datacheck.checked})}
+        firstName={userdata.firstName}
+        lastName={userdata.lastName}
+        checkbox={Boolean(userdata.checkbox)}
+        first={(e)=>setUserData({...userdata,firstName:e.target.value})}
+        last={(e)=>setUserData({...userdata,lastName:e.target.value})}
+        check={(e,datacheck)=>setUserData({...userdata,checkbox:datacheck.checked})}
         post={updateData}
         /> 
     )
