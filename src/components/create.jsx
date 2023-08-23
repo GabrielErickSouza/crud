@@ -12,19 +12,21 @@ export default function Create() {
   const [checkbox, setCheckbox] = useState(false);
   const history = useNavigate();
 
-  const mutation = useMutation(() =>
-    axios
-      .post('https://646f6e7609ff19b120873f81.mockapi.io/fakedata', {
-        firstName,
-        lastName,
-        checkbox
-      })
-      .then(() => {
+  const mutation = useMutation({
+    mutationFn:
+      () => (
+        axios
+          .post('https://646f6e7609ff19b120873f81.mockapi.io/fakedata', {
+            firstName,
+            lastName,
+            checkbox
+          })),
+    onSuccess:
+      () => {
+        alert('Dados criado com sucesso!');
         history('/read');
-      })
-      .then(() => alert('Dados Criados com Sucesso!'))
-  );
-
+      }
+  });
   return (
     <Forms
       firstName={firstName}
@@ -33,13 +35,13 @@ export default function Create() {
       first={(e) => setFirstName(e.target.value)}
       last={(e) => setLastName(e.target.value)}
       check={() => setCheckbox(!checkbox)}
-      post={() =>
+      post={() => (
         mutation.mutate({
           firstName: firstName,
           lastName: lastName,
           checkbox: checkbox
         })
-      }
+      )}
     />
   );
 }

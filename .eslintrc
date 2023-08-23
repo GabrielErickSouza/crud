@@ -11,6 +11,11 @@
   "rules": {
     "object-curly-newline": "error",
     "no-alert": "off",
-    "comma-dangle": ["error", "never"]
+    "comma-dangle": ["error", "never"],
+    "linebreak-style":[0,"error","Windows"],
+    "eol-last":"off",
+    "arrow-body-style":"off",
+    "react/jsx-one-expression-per-line": "off",
+    "object-shorthand":"off"
   }
 }

@@ -1,10 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useQuery, useMutation } from 'react-query';
-import { useNavigate } from 'react-router-dom';
-import Forms from './forms';
-
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import Forms from './forms';
 
 export default function Update() {
   const [userdata, setUserData] = useState();
@@ -14,7 +12,7 @@ export default function Update() {
   const history = useNavigate();
 
   const { data, isLoading } = useQuery('user', () => {
-    return axios
+    axios
       .get(`https://646f6e7609ff19b120873f81.mockapi.io/fakedata/${id}`)
       .then((response) => response.data);
   });
@@ -26,11 +24,7 @@ export default function Update() {
   }, [data]);
 
   const mutation = useMutation({
-    mutationFn: (data) =>
-      axios.put(
-        `https://646f6e7609ff19b120873f81.mockapi.io/fakedata/${id}`,
-        data
-      ),
+    mutationFn: (Data) => axios.put(`https://646f6e7609ff19b120873f81.mockapi.io/fakedata/${id}`, Data),
     onSuccess: () => {
       alert('Atualizado com sucesso!');
       history('/read');
@@ -53,9 +47,7 @@ export default function Update() {
       checkbox={Boolean(userdata.checkbox)}
       first={(e) => setUserData({ ...userdata, firstName: e.target.value })}
       last={(e) => setUserData({ ...userdata, lastName: e.target.value })}
-      check={(e, datacheck) =>
-        setUserData({ ...userdata, checkbox: datacheck.checked })
-      }
+      check={(e, datacheck) => setUserData({ ...userdata, checkbox: datacheck.checked })}
       post={updateData}
     />
   );
